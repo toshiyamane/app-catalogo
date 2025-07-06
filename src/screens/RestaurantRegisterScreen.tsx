@@ -19,6 +19,7 @@ import { formatarCNPJ } from '../utils/masks';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../types/navigation';
 import { Restaurante } from '../types/restaurante';
+import { restaurant_register_styles } from '../styles/restaurant_register_styles';
 
 type Props = NativeStackScreenProps<AppStackParamList, 'RestaurantRegister'>;
 
@@ -104,12 +105,12 @@ export const RestaurantRegisterScreen = ({ route, navigation }: Props) => {
 
   return (
     <KeyboardAvoidingView
-      style={styles.flex}
+      style={restaurant_register_styles.flex}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-          <Text style={styles.title}>{restauranteEdit ? 'Editar Restaurante' : 'Cadastro de Restaurante'}</Text>
+        <ScrollView contentContainerStyle={restaurant_register_styles.container} keyboardShouldPersistTaps="handled">
+          <Text style={restaurant_register_styles.title}>{restauranteEdit ? 'Editar Restaurante' : 'Cadastro de Restaurante'}</Text>
 
           <Input label="Nome do Restaurante" value={nome} onChangeText={setNome} />
           <Input label="Endereço" value={endereco} onChangeText={setEndereco} />
@@ -140,23 +141,3 @@ export const RestaurantRegisterScreen = ({ route, navigation }: Props) => {
     </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  flex: {
-    flex: 1,
-  },
-  container: {
-    flexGrow: 1,
-    paddingHorizontal: 24,
-    paddingTop: 48,
-    paddingBottom: 48,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-});
- 
