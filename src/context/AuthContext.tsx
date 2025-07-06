@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     const loadUserFromStorage = async () => {
-      const savedUser = await AsyncStorage.getItem('@CatalogoDigitalApp:user');
+      const savedUser = await AsyncStorage.getItem('@RestauranteApp:user');
       if (savedUser) {
         setUser(JSON.parse(savedUser));
       }
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const login = async (email: string, senha: string): Promise<boolean> => {
     try {
-      const usersJSON = await AsyncStorage.getItem('@CatalogoDigitalApp:usuarios');
+      const usersJSON = await AsyncStorage.getItem('@RestauranteApp:usuarios');
       const users: User[] = usersJSON ? JSON.parse(usersJSON) : [];
 
       const found = users.find(
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       if (found) {
         setUser(found);
-        await AsyncStorage.setItem('@CatalogoDigitalApp:user', JSON.stringify(found));
+        await AsyncStorage.setItem('@RestauranteApp:user', JSON.stringify(found));
         return true;
       }
 
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const register = async (userData: Omit<User, 'senha'> & { senha: string }): Promise<boolean> => {
     try {
-      const usersJSON = await AsyncStorage.getItem('@CatalogoDigitalApp:usuarios');
+      const usersJSON = await AsyncStorage.getItem('@RestauranteApp:usuarios');
       const users: User[] = usersJSON ? JSON.parse(usersJSON) : [];
 
       const exists = users.some((u) => u.email.toLowerCase() === userData.email.toLowerCase());
@@ -67,9 +67,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const newUser: User = { ...userData };
       users.push(newUser);
 
-      await AsyncStorage.setItem('@CatalogoDigitalApp:usuarios', JSON.stringify(users));
+      await AsyncStorage.setItem('@RestauranteApp:usuarios', JSON.stringify(users));
       setUser(newUser);
-      await AsyncStorage.setItem('@CatalogoDigitalApp:user', JSON.stringify(newUser));
+      await AsyncStorage.setItem('@RestauranteApp:user', JSON.stringify(newUser));
 
       return true;
     } catch (error) {
@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const logout = () => {
     setUser(null);
-    AsyncStorage.removeItem('@CatalogoDigitalApp:user');
+    AsyncStorage.removeItem('@RestauranteApp:user');
   };
 
   return (

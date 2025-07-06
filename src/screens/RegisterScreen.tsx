@@ -45,7 +45,7 @@ export const RegisterScreen = () => {
     }
 
     try {
-      const usuariosJSON = await AsyncStorage.getItem('@CatalogoDigitalApp:usuarios');
+      const usuariosJSON = await AsyncStorage.getItem('@RestauranteApp:usuarios');
       const usuarios: Usuario[] = usuariosJSON ? JSON.parse(usuariosJSON) : [];
 
       const emailExistente = usuarios.some((u) => u.email.toLowerCase() === email.toLowerCase());
@@ -64,7 +64,7 @@ export const RegisterScreen = () => {
       };
 
       usuarios.push(novoUsuario);
-      await AsyncStorage.setItem('@CatalogoDigitalApp:usuarios', JSON.stringify(usuarios));
+      await AsyncStorage.setItem('@RestauranteApp:usuarios', JSON.stringify(usuarios));
 
       Alert.alert('Sucesso', 'Cadastro realizado com sucesso!', [
         { text: 'OK', onPress: () => navigation.navigate('Login') },

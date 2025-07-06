@@ -1,4 +1,4 @@
-// StoreRegisterScreen.tsx - criado automaticamente
+// RestaurantRegisterScreen.tsx - criado automaticamente
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -18,13 +18,13 @@ import { validarCNPJ } from '../utils/validators';
 import { formatarCNPJ } from '../utils/masks';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../types/navigation';
-import { Loja } from '../types/loja';
+import { Restaurante } from '../types/restaurante';
 
-type Props = NativeStackScreenProps<AppStackParamList, 'StoreRegister'>;
+type Props = NativeStackScreenProps<AppStackParamList, 'RestaurantRegister'>;
 
 
-export const StoreRegisterScreen = ({ route, navigation }: Props) => {
-  const lojaEdit = route.params?.loja;
+export const RestaurantRegisterScreen = ({ route, navigation }: Props) => {
+  const restauranteEdit = route.params?.restaurante;
 
   const [nome, setNome] = useState('');
   const [endereco, setEndereco] = useState('');
@@ -33,14 +33,14 @@ export const StoreRegisterScreen = ({ route, navigation }: Props) => {
   const [longitude, setLongitude] = useState('');
 
   useEffect(() => {
-    if (lojaEdit) {
-      setNome(lojaEdit.nome);
-      setEndereco(lojaEdit.endereco);
-      setCnpj(lojaEdit.cnpj);
-      setLatitude(lojaEdit.latitude);
-      setLongitude(lojaEdit.longitude);
+    if (restauranteEdit) {
+      setNome(restauranteEdit.nome);
+      setEndereco(restauranteEdit.endereco);
+      setCnpj(restauranteEdit.cnpj);
+      setLatitude(restauranteEdit.latitude);
+      setLongitude(restauranteEdit.longitude);
     }
-  }, [lojaEdit]);
+  }, [restauranteEdit]);
 
   const limparCampos = () => {
     setNome('');
@@ -69,19 +69,19 @@ export const StoreRegisterScreen = ({ route, navigation }: Props) => {
     }
 
     try {
-      const dadosExistentes = await AsyncStorage.getItem('@CatalogoDigitalApp:lojas');
-      const lojas = dadosExistentes ? JSON.parse(dadosExistentes) : [];
+      const dadosExistentes = await AsyncStorage.getItem('@RestauranteApp:restaurantes');
+      const restaurantes = dadosExistentes ? JSON.parse(dadosExistentes) : [];
 
-      if (lojaEdit) {
-        const lojasAtualizadas = lojas.map((l: Loja) =>
-          l.id === lojaEdit.id
-            ? { ...l, nome, endereco, cnpj, latitude, longitude }
-            : l
+      if (restauranteEdit) {
+        const restaurantesAtualizadas = restaurantes.map((r: Restaurante) =>
+          r.id === restauranteEdit.id
+            ? { ...r, nome, endereco, cnpj, latitude, longitude }
+            : r
         );
-        await AsyncStorage.setItem('@CatalogoDigitalApp:lojas', JSON.stringify(lojasAtualizadas));
-        Alert.alert('Sucesso', 'Loja atualizada com sucesso!');
+        await AsyncStorage.setItem('@RestauranteApp:restaurantes', JSON.stringify(restaurantesAtualizadas));
+        Alert.alert('Sucesso', 'Restaurante atualizada com sucesso!');
       } else {
-        const novaLoja: Loja = {
+        const novoRestaurante: Restaurante = {
           id: Date.now().toString(),
           nome,
           endereco,
@@ -89,15 +89,15 @@ export const StoreRegisterScreen = ({ route, navigation }: Props) => {
           latitude,
           longitude,
         };
-        lojas.push(novaLoja);
-        await AsyncStorage.setItem('@CatalogoDigitalApp:lojas', JSON.stringify(lojas));
-        Alert.alert('Sucesso', 'Loja cadastrada com sucesso!');
+        restaurantes.push(novoRestaurante);
+        await AsyncStorage.setItem('@RestauranteApp:restaurantes', JSON.stringify(restaurantes));
+        Alert.alert('Sucesso', 'Restaurante cadastrada com sucesso!');
         limparCampos();
       }
 
       navigation.goBack();
     } catch (error) {
-      Alert.alert('Erro', 'Falha ao salvar a loja.');
+      Alert.alert('Erro', 'Falha ao salvar o restaurante.');
       console.error(error);
     }
   };
@@ -109,9 +109,9 @@ export const StoreRegisterScreen = ({ route, navigation }: Props) => {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-          <Text style={styles.title}>{lojaEdit ? 'Editar Loja' : 'Cadastro de Loja'}</Text>
+          <Text style={styles.title}>{restauranteEdit ? 'Editar Restaurante' : 'Cadastro de Restaurante'}</Text>
 
-          <Input label="Nome da Loja" value={nome} onChangeText={setNome} />
+          <Input label="Nome do Restaurante" value={nome} onChangeText={setNome} />
           <Input label="Endereço" value={endereco} onChangeText={setEndereco} />
           <Input
             label="CNPJ"
@@ -133,7 +133,7 @@ export const StoreRegisterScreen = ({ route, navigation }: Props) => {
           />
 
           <View style={{ marginTop: 24 }}>
-            <Button title={lojaEdit ? 'Salvar Alterações' : 'Cadastrar Loja'} onPress={handleSubmit} />
+            <Button title={restauranteEdit ? 'Salvar Alterações' : 'Cadastrar Restaurante'} onPress={handleSubmit} />
           </View>
         </ScrollView>
       </TouchableWithoutFeedback>

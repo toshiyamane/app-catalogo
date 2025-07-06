@@ -4,7 +4,7 @@ const path = require('path');
 const projectRoot = path.join(__dirname, 'src');
 
 const structure = {
-  'assets': ['logo-sacola.png', 'placeholder-image.png'],
+  'assets': ['delicious-food', 'placeholder-image.png'],
   'components': ['Button.tsx', 'Input.tsx'],
   'context': ['AuthContext.tsx'],
   'navigation': ['AppNavigator.tsx'],
@@ -15,12 +15,12 @@ const structure = {
     'ProductListScreen.tsx',
     'ProductRegisterScreen.tsx',
     'RegisterScreen.tsx',
-    'StoreListScreen.tsx',
-    'StoreRegisterScreen.tsx',
+    'RestaurantListScreen.tsx',
+    'RestaurantRegisterScreen.tsx',
   ],
   'services': ['authService.ts', 'iaService.ts', 'productService.ts'],
   'styles': ['global.ts', 'home_styles.ts', 'register_styles.ts'],
-  'types': ['loja.ts', 'navigation.ts', 'produto.ts', 'user.ts'],
+  'types': ['restaurante.ts', 'navigation.ts', 'produto.ts', 'user.ts'],
   'utils': ['masks.ts', 'validators.ts'],
 };
 

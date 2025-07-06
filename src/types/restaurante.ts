@@ -1,5 +1,5 @@
-// loja.ts - criado automaticamente
-export interface Loja {
+// restaurante.ts - criado automaticamente
+export interface Restaurante {
   id: string;
   nome: string;
   endereco: string;

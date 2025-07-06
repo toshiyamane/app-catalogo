@@ -31,8 +31,8 @@ export const LoginScreen = ({ navigation }: Props) => {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/logo-sacola.png')} style={styles.logo} />
-      <Text style={styles.title}>Entrar no Catálogo</Text>
+      <Image source={require('../assets/delicious-food.png')} style={styles.logo} />
+      <Text style={styles.title}>Entrar no Delicious Food</Text>
 
       <Input label="E-mail" value={email} onChangeText={setEmail} keyboardType="email-address" />
       <Input label="Senha" value={senha} onChangeText={setSenha} secureTextEntry />

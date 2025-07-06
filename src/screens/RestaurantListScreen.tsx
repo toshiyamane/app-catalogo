@@ -1,4 +1,4 @@
-// StoreListScreen.tsx - criado automaticamente
+// RestaurantListScreen.tsx - criado automaticamente
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../types/navigation';
 
-interface Loja {
+interface Restaurante {
   id: string;
   nome: string;
   endereco: string;
@@ -22,42 +22,42 @@ interface Loja {
   longitude: string;
 }
 
-export const StoreListScreen = () => {
-  const [lojas, setLojas] = useState<Loja[]>([]);
+export const RestaurantListScreen = () => {
+  const [restaurantes, setRestaurantes] = useState<Restaurante[]>([]);
   const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>();
 
   useEffect(() => {
-    carregarLojas();
+    carregarRestaurantes();
   }, []);
 
-  const carregarLojas = async () => {
-    const data = await AsyncStorage.getItem('@CatalogoDigitalApp:lojas');
+  const carregarRestaurantes = async () => {
+    const data = await AsyncStorage.getItem('@RestauranteApp:restaurantes');
     if (data) {
-      setLojas(JSON.parse(data));
+      setRestaurantes(JSON.parse(data));
     }
   };
 
-  const excluirLoja = (id: string) => {
-    Alert.alert('Excluir Loja', 'Tem certeza que deseja excluir esta loja?', [
+  const excluirRestaurante = (id: string) => {
+    Alert.alert('Excluir Restaurante', 'Tem certeza que deseja excluir este restaurante?', [
       { text: 'Cancelar', style: 'cancel' },
       {
         text: 'Excluir',
         style: 'destructive',
         onPress: async () => {
-          const atualizadas = lojas.filter((l) => l.id !== id);
-          setLojas(atualizadas);
-          await AsyncStorage.setItem('@CatalogoDigitalApp:lojas', JSON.stringify(atualizadas));
+          const atualizadas = restaurantes.filter((r) => r.id !== id);
+          setRestaurantes(atualizadas);
+          await AsyncStorage.setItem('@RestauranteApp:Restaurantes', JSON.stringify(atualizadas));
         },
       },
     ]);
   };
 
-  const editarLoja = (loja: Loja) => {
+  const editarRestaurante = (restaurante: Restaurante) => {
     console.log("teste");
-    navigation.navigate('StoreRegister', { loja });
+    navigation.navigate('RestaurantRegister', { restaurante });
   };
 
-  const renderItem = ({ item }: { item: Loja }) => (
+  const renderItem = ({ item }: { item: Restaurante }) => (
     <View style={styles.card}>
       <View style={styles.details}>
         <Text style={styles.nome}>{item.nome}</Text>
@@ -65,10 +65,10 @@ export const StoreListScreen = () => {
         <Text style={styles.cnpj}>CNPJ: {item.cnpj}</Text>
         <Text style={styles.coord}>Lat: {item.latitude} | Lon: {item.longitude}</Text>
         <View style={styles.actions}>
-          <TouchableOpacity onPress={() => editarLoja(item)} style={styles.buttonEdit}>
+          <TouchableOpacity onPress={() => editarRestaurante(item)} style={styles.buttonEdit}>
             <Text style={styles.buttonText}>Editar</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => excluirLoja(item.id)} style={styles.buttonDelete}>
+          <TouchableOpacity onPress={() => excluirRestaurante(item.id)} style={styles.buttonDelete}>
             <Text style={styles.buttonText}>Excluir</Text>
           </TouchableOpacity>
         </View>
@@ -79,10 +79,10 @@ export const StoreListScreen = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={lojas}
+        data={restaurantes}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
-        ListEmptyComponent={<Text style={styles.empty}>Nenhuma loja cadastrada.</Text>}
+        ListEmptyComponent={<Text style={styles.empty}>Nenhuma restaurante cadastrada.</Text>}
       />
     </View>
   );

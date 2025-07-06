@@ -2,7 +2,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Produto } from '../types/produto';
 
-const STORAGE_KEY = '@CatalogoDigitalApp:produtos';
+const STORAGE_KEY = '@RestauranteApp:produtos';
 
 export async function salvarProduto(produto: Produto): Promise<void> {
   const data = await AsyncStorage.getItem(STORAGE_KEY);

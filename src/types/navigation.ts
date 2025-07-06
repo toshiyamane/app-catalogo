@@ -1,6 +1,6 @@
 // navigation.ts - criado automaticamente
-import { StoreListScreen } from './../screens/StoreListScreen';
-import { Loja } from './loja';
+import { RestaurantListScreen } from '../screens/RestaurantListScreen';
+import { Restaurante } from './restaurante';
 import { Produto } from './produto';
 
 export type AuthStackParamList = {
@@ -10,10 +10,10 @@ export type AuthStackParamList = {
 
 export type AppStackParamList = {
   Home: undefined;
-  StoreRegister: {loja?: Loja};
+  RestaurantRegister: {restaurante?: Restaurante};
   ProductRegister: {produto?: Produto};
   ProductList: undefined;
-  StoreList: undefined;
+  RestaurantList: undefined;
 };
 
 
