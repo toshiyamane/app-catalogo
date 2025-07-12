@@ -13,6 +13,7 @@ import { ProductListScreen } from '../screens/ProductListScreen';
 import { RestaurantListScreen } from '../screens/RestaurantListScreen';
 import { ActivityIndicator, View } from 'react-native';
 import { AuthStackParamList, AppStackParamList } from '../types/navigation';
+import { RestaurantSelectionScreen } from '../screens/RestaurantSelectionScreen';
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 const AppStack = createNativeStackNavigator<AppStackParamList>();
@@ -37,6 +38,7 @@ export function Routes() {
           <AppStack.Screen name="ProductRegister" component={ProductRegisterScreen} />
           <AppStack.Screen name="ProductList" component={ProductListScreen} />
           <AppStack.Screen name="RestaurantList" component={RestaurantListScreen} />
+          <AppStack.Screen name="RestaurantSelection" component={RestaurantSelectionScreen} />
         </AppStack.Navigator>
       ) : (
         <AuthStack.Navigator id={undefined}>

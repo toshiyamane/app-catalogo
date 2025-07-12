@@ -8,16 +8,29 @@ import {
   ScrollView,
   RefreshControl,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import home_styles from '../styles/home_styles';
-import { Produto } from '../types/produto';
+import { OnlyAdmin } from '../components/OnlyAdmin';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const HomeScreen = () => {
+
+    const limparBase = async () => {
+    try {
+      await AsyncStorage.clear();
+      Alert.alert('Sucesso', 'Base de dados limpa!');
+    } catch (error) {
+      Alert.alert('Erro', 'Falha ao limpar a base.');
+      console.error(error);
+    }
+  };
+  
   const { user, logout } = useAuth();
   const navigation = useNavigation();
+  const tipo = user?.tipo;
 
   const MenuButton = ({
     title,
@@ -44,16 +57,43 @@ export const HomeScreen = () => {
         contentContainerStyle={{ flexGrow: 1, padding: 16 }}
         keyboardShouldPersistTaps="handled"
       >
-        <Text style={home_styles.welcome}>Bem-vindo, {user?.nome}!</Text>
+        <Text style={home_styles.welcome}>
+          Bem-vindo, {user?.nome}!
+        </Text>
+       {user?.tipo && (
+          <Text style={home_styles.welcomeTipo}>
+            Perfil: {user.tipo === 'admin' ? 'Administrador' : 'Cliente'}
+          </Text>
+        )}
 
-        <View style={home_styles.menuContainer}>
-          <MenuButton title="Cadastrar Restaurante" screen="RestaurantRegister" />
-          <MenuButton title="Lista de Restaurantes" screen="RestaurantList" />
-          <MenuButton title="Cadastrar Produto" screen="ProductRegister" />
-          <MenuButton title="Lista de Produtos" screen="ProductList" />
-          <MenuButton title="Sair" onPress={logout} color="#DC2626" />
-        </View>
-      </ScrollView>
+          <View style={home_styles.menuContainer}>
+            <OnlyAdmin>
+              <MenuButton title="Cadastrar Restaurante" screen="RestaurantRegister" />
+              <MenuButton title="Cadastrar Produto" screen="ProductRegister" />
+              <MenuButton title="Lista de Produtos" screen="ProductList" />
+              <MenuButton title="Lista de Restaurantes" screen="RestaurantList" />
+            </OnlyAdmin>
+            
+            {tipo === 'cliente' && (
+              <MenuButton title="Ver Cardápio" screen="RestaurantSelection" />
+            )}
+
+            <MenuButton title="Sair" onPress={logout} color="#DC2626" />
+          </View>
+        </ScrollView>
+
+       <TouchableOpacity
+        onPress={limparBase}
+        style={{
+          backgroundColor: '#DC2626',
+          paddingVertical: 12,
+          paddingHorizontal: 20,
+          borderRadius: 8,
+          marginTop: 20,
+        }}
+      >
+        <Text style={{ color: '#fff', fontWeight: 'bold' }}>Limpar Base de Dados</Text>
+      </TouchableOpacity>
     </View>
   );
 };

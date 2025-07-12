@@ -78,6 +78,11 @@ const home_styles = StyleSheet.create({
   maxHeight: 120, // altura máxima da rolagem
   marginBottom: 8,
 },
+welcomeTipo: {
+  fontSize: 16,
+  color: '#6B7280', // cinza
+  marginBottom: 12,
+},
 
 });
 

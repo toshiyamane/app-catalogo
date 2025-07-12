@@ -64,5 +64,19 @@ export const restaurant_list_styles = StyleSheet.create({
     fontSize: 16,
     color: '#888',
   },
+   title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  input: {
+  backgroundColor: '#FFFFFF',
+  borderRadius: 8,
+  padding: 12,
+  marginBottom: 16,
+  borderWidth: 1,
+  borderColor: '#D1D5DB',
+  fontSize: 16,
+},
 });
  

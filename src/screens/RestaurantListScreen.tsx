@@ -4,7 +4,7 @@ import {
   View,
   Text,
   FlatList,
-  StyleSheet,
+  TextInput,
   Alert,
   TouchableOpacity,
 } from 'react-native';
@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../types/navigation';
 import {restaurant_list_styles} from '../styles/restaurant_list_styles'
+import { OnlyAdmin } from '../components/OnlyAdmin';
 
 interface Restaurante {
   id: string;
@@ -26,6 +27,7 @@ interface Restaurante {
 export const RestaurantListScreen = () => {
   const [restaurantes, setRestaurantes] = useState<Restaurante[]>([]);
   const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>();
+  const [filtro, setFiltro] = useState('');
 
   useEffect(() => {
     carregarRestaurantes();
@@ -54,9 +56,12 @@ export const RestaurantListScreen = () => {
   };
 
   const editarRestaurante = (restaurante: Restaurante) => {
-    console.log("teste");
     navigation.navigate('RestaurantRegister', { restaurante });
   };
+
+  const restaurantesFiltrados = restaurantes.filter((r) =>
+    r.nome.toLowerCase().includes(filtro.toLowerCase())
+  );
 
   const renderItem = ({ item }: { item: Restaurante }) => (
     <View style={restaurant_list_styles.card}>
@@ -65,25 +70,34 @@ export const RestaurantListScreen = () => {
         <Text style={restaurant_list_styles.endereco}>{item.endereco}</Text>
         <Text style={restaurant_list_styles.cnpj}>CNPJ: {item.cnpj}</Text>
         <Text style={restaurant_list_styles.coord}>Lat: {item.latitude} | Lon: {item.longitude}</Text>
-        <View style={restaurant_list_styles.actions}>
-          <TouchableOpacity onPress={() => editarRestaurante(item)} style={restaurant_list_styles.buttonEdit}>
-            <Text style={restaurant_list_styles.buttonText}>Editar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => excluirRestaurante(item.id)} style={restaurant_list_styles.buttonDelete}>
-            <Text style={restaurant_list_styles.buttonText}>Excluir</Text>
-          </TouchableOpacity>
-        </View>
+        <OnlyAdmin>
+          <View style={restaurant_list_styles.actions}>
+            <TouchableOpacity onPress={() => editarRestaurante(item)} style={restaurant_list_styles.buttonEdit}>
+              <Text style={restaurant_list_styles.buttonText}>Editar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => excluirRestaurante(item.id)} style={restaurant_list_styles.buttonDelete}>
+              <Text style={restaurant_list_styles.buttonText}>Excluir</Text>
+            </TouchableOpacity>
+          </View>
+        </OnlyAdmin>
       </View>
     </View>
   );
 
   return (
     <View style={restaurant_list_styles.container}>
+      <TextInput
+        placeholder="Buscar restaurante por nome..."
+        value={filtro}
+        onChangeText={setFiltro}
+        style={restaurant_list_styles.input}
+      />
+
       <FlatList
-        data={restaurantes}
+        data={restaurantesFiltrados}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
-        ListEmptyComponent={<Text style={restaurant_list_styles.empty}>Nenhuma restaurante cadastrada.</Text>}
+        ListEmptyComponent={<Text style={restaurant_list_styles.empty}>Nenhum restaurante encontrado.</Text>}
       />
     </View>
   );

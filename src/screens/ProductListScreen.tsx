@@ -16,12 +16,17 @@ import { AppStackParamList } from '../types/navigation';
 import { Produto } from '../types/produto';
 import { listarProdutos, excluirProdutoPorId } from '../services/productService';
 import { product_styles } from '../styles/product_styles';
+import { OnlyAdmin } from '../components/OnlyAdmin';
+import { RouteProp, useRoute } from '@react-navigation/native';
+
 
 export const ProductListScreen = () => {
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const [filtro, setFiltro] = useState('');
   const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>();
   const isFocused = useIsFocused();
+  const route = useRoute<RouteProp<AppStackParamList, 'ProductList'>>();
+  const restauranteId = route.params?.restauranteId;
 
   useEffect(() => {
     if (isFocused) {
@@ -30,8 +35,11 @@ export const ProductListScreen = () => {
   }, [isFocused]);
 
   const carregarProdutos = async () => {
-    const lista = await listarProdutos();
-    setProdutos(lista);
+  const lista = await listarProdutos();
+  const filtrados = restauranteId
+    ? lista.filter((p) => p.restauranteId === restauranteId)
+    : lista;
+  setProdutos(filtrados);
   };
 
   const excluirProduto = (id: string) => {
@@ -66,14 +74,16 @@ export const ProductListScreen = () => {
         <Text style={product_styles.nome}>{item.nome}</Text>
         <Text style={product_styles.descricao}>{item.descricao}</Text>
         <Text style={product_styles.preco}>R$ {item.preco}</Text>
-        <View style={product_styles.actions}>
-          <TouchableOpacity onPress={() => editarProduto(item)} style={product_styles.buttonEdit}>
-            <Text style={product_styles.buttonText}>Editar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => excluirProduto(item.id)} style={product_styles.buttonDelete}>
-            <Text style={product_styles.buttonText}>Excluir</Text>
-          </TouchableOpacity>
-        </View>
+        <OnlyAdmin>
+          <View style={product_styles.actions}>
+            <TouchableOpacity onPress={() => editarProduto(item)} style={product_styles.buttonEdit}>
+              <Text style={product_styles.buttonText}>Editar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => excluirProduto(item.id)} style={product_styles.buttonDelete}>
+              <Text style={product_styles.buttonText}>Excluir</Text>
+            </TouchableOpacity>
+          </View>
+        </OnlyAdmin>
       </View>
     </View>
   );

@@ -12,8 +12,9 @@ export type AppStackParamList = {
   Home: undefined;
   RestaurantRegister: {restaurante?: Restaurante};
   ProductRegister: {produto?: Produto};
-  ProductList: undefined;
+  ProductList:  { restauranteId?: string };
   RestaurantList: undefined;
+  RestaurantSelection: undefined;
 };
 
 

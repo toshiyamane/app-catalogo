@@ -20,6 +20,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../types/navigation';
 import { Restaurante } from '../types/restaurante';
 import { restaurant_register_styles } from '../styles/restaurant_register_styles';
+import * as Location from 'expo-location';
 
 type Props = NativeStackScreenProps<AppStackParamList, 'RestaurantRegister'>;
 
@@ -49,6 +50,20 @@ export const RestaurantRegisterScreen = ({ route, navigation }: Props) => {
     setCnpj('');
     setLatitude('');
     setLongitude('');
+  };
+
+  const obterLocalizacaoAtual = async () => {
+  const { status } = await Location.requestForegroundPermissionsAsync();
+
+  if (status !== 'granted') {
+    Alert.alert('Permissão negada', 'Você precisa permitir acesso à localização para usar esta função.');
+    return;
+  }
+
+  const location = await Location.getCurrentPositionAsync({});
+
+  setLatitude(location.coords.latitude.toString());
+  setLongitude(location.coords.longitude.toString());
   };
 
   const handleSubmit = async () => {
@@ -132,6 +147,9 @@ export const RestaurantRegisterScreen = ({ route, navigation }: Props) => {
             onChangeText={setLongitude}
             keyboardType="numeric"
           />
+          <View style={{ marginVertical: 8 }}>
+            <Button title="Usar Localização Atual" onPress={obterLocalizacaoAtual} />
+          </View>
 
           <View style={{ marginTop: 24 }}>
             <Button title={restauranteEdit ? 'Salvar Alterações' : 'Cadastrar Restaurante'} onPress={handleSubmit} />

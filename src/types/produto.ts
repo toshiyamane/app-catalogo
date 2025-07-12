@@ -5,5 +5,6 @@ export interface Produto {
   descricao: string;
   preco: string;
   imagem: string;
+  restauranteId: string;
 }
  
