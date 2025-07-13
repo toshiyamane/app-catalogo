@@ -18,15 +18,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const HomeScreen = () => {
 
-    const limparBase = async () => {
-    try {
-      await AsyncStorage.clear();
-      Alert.alert('Sucesso', 'Base de dados limpa!');
-    } catch (error) {
-      Alert.alert('Erro', 'Falha ao limpar a base.');
-      console.error(error);
-    }
-  };
+  //   const limparBase = async () => {
+  //   try {
+  //     await AsyncStorage.clear();
+  //     Alert.alert('Sucesso', 'Base de dados limpa!');
+  //   } catch (error) {
+  //     Alert.alert('Erro', 'Falha ao limpar a base.');
+  //     console.error(error);
+  //   }
+  // };
   
   const { user, logout } = useAuth();
   const navigation = useNavigation();
@@ -82,7 +82,7 @@ export const HomeScreen = () => {
           </View>
         </ScrollView>
 
-       <TouchableOpacity
+       {/* <TouchableOpacity
         onPress={limparBase}
         style={{
           backgroundColor: '#DC2626',
@@ -93,7 +93,7 @@ export const HomeScreen = () => {
         }}
       >
         <Text style={{ color: '#fff', fontWeight: 'bold' }}>Limpar Base de Dados</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

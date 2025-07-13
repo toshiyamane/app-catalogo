@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../types/navigation';
 import {restaurant_list_styles} from '../styles/restaurant_list_styles'
@@ -29,9 +29,12 @@ export const RestaurantListScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>();
   const [filtro, setFiltro] = useState('');
 
-  useEffect(() => {
-    carregarRestaurantes();
-  }, []);
+    const isFocused = useIsFocused();
+    useEffect(() => {
+      if (isFocused) {
+        carregarRestaurantes();
+      }
+    }, [isFocused]);
 
   const carregarRestaurantes = async () => {
     const data = await AsyncStorage.getItem('@RestauranteApp:restaurantes');
@@ -49,7 +52,8 @@ export const RestaurantListScreen = () => {
         onPress: async () => {
           const atualizadas = restaurantes.filter((r) => r.id !== id);
           setRestaurantes(atualizadas);
-          await AsyncStorage.setItem('@RestauranteApp:Restaurantes', JSON.stringify(atualizadas));
+          await AsyncStorage.setItem('@RestauranteApp:restaurantes', JSON.stringify(atualizadas));
+           carregarRestaurantes();
         },
       },
     ]);
